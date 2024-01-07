@@ -1,7 +1,6 @@
 package se.kthraven.messageservice.Persistence;
 
 import se.kthraven.messageservice.Persistence.entities.MessageDB;
-import se.kthraven.messageservice.Persistence.entities.UserDB;
 
 import java.util.Collection;
 

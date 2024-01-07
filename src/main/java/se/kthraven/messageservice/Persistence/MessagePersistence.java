@@ -2,7 +2,6 @@ package se.kthraven.messageservice.Persistence;
 
 import jakarta.persistence.EntityManager;
 import se.kthraven.messageservice.Persistence.entities.MessageDB;
-import se.kthraven.messageservice.Persistence.entities.UserDB;
 
 import java.util.Collection;
 import java.util.UUID;
@@ -11,7 +10,7 @@ public class MessagePersistence implements IMessagePersistence{
     @Override
     public Collection<MessageDB> getConversation(String userId1, String userId2) {
         EntityManager em = DBManager.getEntityManager();
-        Collection<MessageDB> messages = em.createQuery("SELECT m FROM MessageDB m WHERE (m.sender.id = :sid1 AND m.receiver.id = :rid1) OR (m.sender.id = :sid2 AND m.receiver.id = :rid2)" +
+        Collection<MessageDB> messages = em.createQuery("SELECT m FROM MessageDB m WHERE (m.senderId = :sid1 AND m.receiverId = :rid1) OR (m.senderId = :sid2 AND m.receiverId = :rid2)" +
                         "order by sendDate", MessageDB.class)
                 .setParameter("sid1", userId1)
                 .setParameter("rid1", userId2)

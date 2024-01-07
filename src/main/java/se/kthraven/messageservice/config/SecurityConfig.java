@@ -31,18 +31,8 @@ public class SecurityConfig {
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
-        return http
-                .authorizeHttpRequests(auth -> auth
-                        //.requestMatchers("/login").permitAll()
-                        .anyRequest().permitAll())
-                .httpBasic(basic -> basic.init(http))
-                .csrf(csrf -> csrf.disable())
-                .addFilterBefore(new SimpleAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-                .build();
+        http.authorizeHttpRequests(auth -> auth.anyRequest().authenticated()).csrf(csrf -> csrf.disable());
+        http.oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()));
+        return http.build();
     }
-
-    /*@Bean
-    PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
-    }*/
 }

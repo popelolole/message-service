@@ -12,23 +12,21 @@ public class MessageDB {
     private String message;
     @Column(name="send_date")
     private Date sendDate;
-    @ManyToOne
-    @JoinColumn(name = "sender_id")
-    private UserDB sender;
-    @ManyToOne
-    @JoinColumn(name = "receiver_id")
-    private UserDB receiver;
+    @Column(name = "sender_id")
+    private String senderId;
+    @Column(name = "receiver_id")
+    private String receiverId;
 
     public MessageDB(){
 
     }
 
-    public MessageDB(String id, String message, Date sendDate, UserDB sender, UserDB receiver) {
+    public MessageDB(String id, String message, Date sendDate, String senderId, String receiverId) {
         this.id = id;
         this.message = message;
         this.sendDate = sendDate;
-        this.sender = sender;
-        this.receiver = receiver;
+        this.senderId = senderId;
+        this.receiverId = receiverId;
     }
 
     public String getId() {
@@ -55,19 +53,19 @@ public class MessageDB {
         this.sendDate = sendDate;
     }
 
-    public UserDB getSender() {
-        return sender;
+    public String getSenderId() {
+        return senderId;
     }
 
-    public void setSender(UserDB sender) {
-        this.sender = sender;
+    public void setSenderId(String senderId) {
+        this.senderId = senderId;
     }
 
-    public UserDB getReceiver() {
-        return receiver;
+    public String getReceiverId() {
+        return receiverId;
     }
 
-    public void setReceiver(UserDB receiver) {
-        this.receiver = receiver;
+    public void setReceiverId(String receiverId) {
+        this.receiverId = receiverId;
     }
 }

@@ -1,7 +1,6 @@
 package se.kthraven.messageservice.Model.classes;
 
 import se.kthraven.messageservice.Persistence.entities.MessageDB;
-import se.kthraven.messageservice.Persistence.entities.UserDB;
 
 import java.util.Date;
 
@@ -18,8 +17,8 @@ public class Message {
         Message message = new Message(messageDb.getId(),
                 messageDb.getMessage(),
                 messageDb.getSendDate(),
-                messageDb.getSender().getId(),
-                messageDb.getReceiver().getId());
+                messageDb.getSenderId(),
+                messageDb.getReceiverId());
         return message;
     }
 
@@ -27,8 +26,8 @@ public class Message {
         MessageDB messageDb = new MessageDB(this.id,
         this.message,
         this.sendDate,
-        null,
-        null);
+        this.senderId,
+        this.receiverId);
         return messageDb;
     }
 

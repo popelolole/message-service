@@ -12,7 +12,6 @@ import se.kthraven.messageservice.Model.MessageService;
 import se.kthraven.messageservice.Model.classes.Message;
 import se.kthraven.messageservice.Persistence.IMessagePersistence;
 import se.kthraven.messageservice.Persistence.entities.MessageDB;
-import se.kthraven.messageservice.Persistence.entities.UserDB;
 import se.kthraven.messageservice.config.CustomAuthenticationToken;
 
 import java.util.Arrays;
@@ -37,7 +36,7 @@ class MessageServiceApplicationTests {
 		SecurityContextHolder.getContext().setAuthentication(authToken);
 
 		when(persistence.getConversation("user1", "user2"))
-				.thenReturn(Arrays.asList(new MessageDB("1", "Hello", null, new UserDB("1", null, null, null, null), new UserDB("2", null, null, null, null))));
+				.thenReturn(Arrays.asList(new MessageDB("1", "Hello", null, "1", "2")));
 
 		Collection<Message> messages = messageService.getConversation("user1", "user2");
 
@@ -62,8 +61,8 @@ class MessageServiceApplicationTests {
 		verify(authToken).getUserId();
 
 		verify(persistence).createMessage(argThat(messageDb -> {
-			assertEquals("user1", messageDb.getSender().getId());
-			assertEquals("user2", messageDb.getReceiver().getId());
+			assertEquals("user1", messageDb.getSenderId());
+			assertEquals("user2", messageDb.getReceiverId());
 			assertEquals("Hello", messageDb.getMessage());
 			return true;
 		}));
