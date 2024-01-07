@@ -12,7 +12,6 @@ import org.springframework.web.server.ResponseStatusException;
 import se.kthraven.messageservice.Model.classes.Message;
 import se.kthraven.messageservice.Persistence.IMessagePersistence;
 import se.kthraven.messageservice.Persistence.entities.MessageDB;
-import se.kthraven.messageservice.config.CustomAuthenticationToken;
 
 import java.util.ArrayList;
 import java.util.Collection;

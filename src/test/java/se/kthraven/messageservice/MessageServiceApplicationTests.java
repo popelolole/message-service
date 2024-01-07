@@ -6,13 +6,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.server.ResponseStatusException;
 import se.kthraven.messageservice.Model.MessageService;
 import se.kthraven.messageservice.Model.classes.Message;
 import se.kthraven.messageservice.Persistence.IMessagePersistence;
 import se.kthraven.messageservice.Persistence.entities.MessageDB;
-import se.kthraven.messageservice.config.CustomAuthenticationToken;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -31,8 +32,10 @@ class MessageServiceApplicationTests {
 
 	@Test
 	void testGetConversation() {
-		CustomAuthenticationToken authToken = mock(CustomAuthenticationToken.class);
-		when(authToken.getUserId()).thenReturn("user1");
+		Authentication authToken = mock(Authentication.class);
+		Jwt jwt = mock(Jwt.class);
+		when(authToken.getPrincipal()).thenReturn(jwt);
+		when(jwt.getClaim("sub")).thenReturn("user1");
 		SecurityContextHolder.getContext().setAuthentication(authToken);
 
 		when(persistence.getConversation("user1", "user2"))
@@ -43,13 +46,15 @@ class MessageServiceApplicationTests {
 		assertEquals(1, messages.size());
 		assertEquals("Hello", messages.iterator().next().getMessage());
 
-		verify(authToken, times(1)).getUserId();
+		verify(jwt, times(1)).getClaim("sub");
 	}
 
 	@Test
 	void testCreateMessage() {
-		CustomAuthenticationToken authToken = mock(CustomAuthenticationToken.class);
-		when(authToken.getUserId()).thenReturn("user1");
+		Authentication authToken = mock(Authentication.class);
+		Jwt jwt = mock(Jwt.class);
+		when(authToken.getPrincipal()).thenReturn(jwt);
+		when(jwt.getClaim("sub")).thenReturn("user1");
 		SecurityContextHolder.getContext().setAuthentication(authToken);
 
 		doNothing().when(persistence).createMessage(any(MessageDB.class));
@@ -58,7 +63,7 @@ class MessageServiceApplicationTests {
 
 		messageService.createMessage(message);
 
-		verify(authToken).getUserId();
+		verify(jwt).getClaim("sub");
 
 		verify(persistence).createMessage(argThat(messageDb -> {
 			assertEquals("user1", messageDb.getSenderId());
